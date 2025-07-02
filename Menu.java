@@ -138,6 +138,7 @@ public class Menu {
                     timTheoDanhMucSP();
                     break;
                 case 4:
+                    System.out.println("--------------------------------------------------Bạn đã quay lại menu chính từ chức năng tìm kiếm sản phẩm.--------------------------------------------------");
                     return;
                 default:
                     System.out.println("Không có lựa chọn này!");
@@ -163,7 +164,7 @@ public class Menu {
                     sapXepDanhMuc();
                     break;
                 case 3:
-                    System.out.println("Bạn đã quay lại menu chính từ chức năng sắp xếp sản phẩm.");
+                    System.out.println("--------------------------------------------------Bạn đã quay lại menu chính từ chức năng sắp xếp sản phẩm.--------------------------------------------------");
                     return;
                 default:
                     System.out.println("Không có lựa chọn này!");
@@ -197,7 +198,7 @@ public class Menu {
                     giamSoLuong();
                     break;
                 case 3:
-                    System.out.println("Đã thoát khỏi chức năng sắp xếp theo số lượng");
+                    System.out.println("--------------------------------------------------Bạn đã thoát khỏi chức năng sắp xếp theo số lượng--------------------------------------------------");
                     return;
                 default:
                     System.out.println("Không có lựa chọn này!");
@@ -311,8 +312,8 @@ public class Menu {
             }
         }else{
             System.out.println("║                                                      Danh sách sản phẩm trống !                                                         ║");
-            System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
         }
+        System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
     }
 
     private void nhapSanPham(SanPham sanPham) {
