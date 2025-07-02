@@ -41,22 +41,27 @@ public class Menu {
         System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
         System.out.println("║                                                          DANH SÁCH SẢN PHẨM                                                             ║");
         System.out.println("╠════════════╦════════════════════════╦══════════════════╦════════════╦════════════════════════╦════════════════════════╦═════════════════╣");
-        System.out.printf("║ %-10s ║ %-22s ║ %-16s ║ %-10s ║ %-22s ║ %-22s ║ %-15s ║\n", "    Mã", "         Tên", "      Giá", " Số lượng", "        Mô tả", "      Danh mục", "    Nhà SX");
+        System.out.printf("║ %-10s ║ %-22s ║ %-16s ║ %-10s ║ %-22s ║ %-22s ║ %-15s ║\n",
+                "    Mã", "         Tên", "      Giá", " Số lượng", "        Mô tả", "      Danh mục", "    Nhà SX");
         System.out.println("╠════════════╬════════════════════════╬══════════════════╬════════════╬════════════════════════╬════════════════════════╬═════════════════╣");
 
         if (!sanPhamManager.getAll().isEmpty()) {
-            for (SanPham sp : sanPhamManager.getAll()) {
-                System.out.printf("║ %-10s ║ %-22s ║ %-16.2f ║ %-10d ║ %-22s ║ %-22s ║ %-15s ║\n", sp.getMaSanPham(), sp.getTenSanPham(), sp.getGiaSanPham(), sp.getSoLuong(), sp.getMoTa(), sp.getDanhMuc(), sp.getNhaSanXuat());
-                System.out.println("╠════════════╬════════════════════════╬══════════════════╬════════════╬════════════════════════╬════════════════════════╬═════════════════╣");
+            for (int i = 0; i < sanPhamManager.getAll().size(); i++) {
+                SanPham sp = sanPhamManager.getAll().get(i);
+                System.out.printf("║ %-10s ║ %-22s ║ %-16.2f ║ %-10d ║ %-22s ║ %-22s ║ %-15s ║\n",
+                        sp.getMaSanPham(), sp.getTenSanPham(), sp.getGiaSanPham(), sp.getSoLuong(),
+                        sp.getMoTa(), sp.getDanhMuc(), sp.getNhaSanXuat());
+
+                if (i < sanPhamManager.getAll().size() - 1) {
+                    System.out.println("╠════════════╬════════════════════════╬══════════════════╬════════════╬════════════════════════╬════════════════════════╬═════════════════╣");
+                }
             }
         } else {
             System.out.println("║                                                       Danh sách sản phẩm trống!                                                         ║");
         }
 
         System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
-
     }
-
 
     void themSanPham() {
         System.out.println("══════════════════ THÊM SẢN PHẨM ══════════════════");
@@ -95,8 +100,8 @@ public class Menu {
 
     void xoaSanPham() {
         System.out.println("══════════════════ XÓA SẢN PHẨM ══════════════════");
-        String maSamPham = inputStr("Nhập vào mã sản phẩm cần xóa: ");
-        SanPham sanPham = sanPhamManager.findByID(maSamPham);
+        String maSanPham = inputStr("Nhập vào mã sản phẩm cần xóa: ");
+        SanPham sanPham = sanPhamManager.findByID(maSanPham);
         if (sanPham != null) {
             String confirm = inputStr("Bạn thực sự muốn xóa sản phẩm này? [Yes/No]:");
             if (confirm.equalsIgnoreCase("Yes")) {
@@ -131,6 +136,7 @@ public class Menu {
                     break;
                 case 3:
                     timTheoDanhMucSP();
+                    break;
                 case 4:
                     return;
                 default:
@@ -157,7 +163,7 @@ public class Menu {
                     sapXepDanhMuc();
                     break;
                 case 3:
-                    System.out.println("Đã thoát khỏi chức năng sắp xếp sản phẩm...");
+                    System.out.println("Bạn đã quay lại menu chính từ chức năng sắp xếp sản phẩm.");
                     return;
                 default:
                     System.out.println("Không có lựa chọn này!");
@@ -199,6 +205,36 @@ public class Menu {
         } while (choice != 0);
     }
 
+    void ghiVaoFile() {
+        System.out.println("══════════════════ GHI VÀO FILE ══════════════════");
+        String confirm = inputStr("Cảnh báo: Lựa chọn này sẽ tiếp tục ghi nội dung mới vào file! [Yes/No]: ");
+        if (confirm.equalsIgnoreCase("Yes")) {
+            if (sanPhamFileIO.writeCSVFile(sanPhamManager.getAll(), "sanpham.CSV")) {
+                System.out.println("Ghi vào file \"sanpham.CSV\" thành công!");
+            } else {
+                System.out.println("Đã xảy ra lỗi ghi file!");
+            }
+        }
+    }
+
+    void docTuFile() {
+        System.out.println("══════════════════ ĐỌC TỪ FILE ══════════════════");
+        String confirm = inputStr("Cảnh báo: Lựa chọn này sẽ ghi đè danh sách hiện tại trong chương trình! [Yes/No]: ");
+        if (confirm.equalsIgnoreCase("Yes")) {
+            List<SanPham> docFileList = sanPhamFileIO.readCSV("sanpham.CSV"); // đảm bảo đồng bộ đường dẫn
+            if (docFileList == null) {
+                System.out.println("Đọc file thất bại: Không thể mở file hoặc file không đúng định dạng.");
+            } else if (docFileList.isEmpty()) {
+                System.out.println("File rỗng hoặc không chứa sản phẩm hợp lệ.");
+            } else {
+                sanPhamManager.setSanPhamList(docFileList);
+                System.out.println("Đọc dữ liệu từ file \"sanpham.CSV\" thành công!");
+            }
+        } else {
+            System.out.println("Đã hủy đọc file.");
+        }
+    }
+
     private void tangSoLuong() {
         System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
         System.out.println("║                                             ***  SẮP XẾP SỐ LƯỢNG SẢN PHẨM TĂNG DẦN  ***                                                ║");
@@ -223,10 +259,10 @@ public class Menu {
         if (!sanPhamList.isEmpty()) {
             hienThi(sanPhamList);
         } else {
-            System.out.println("║                                     Không tìm thấy Sản Phẩm nào từ mã sản phẩm trên !                                       ║");
+            hienThi(sanPhamList);
+            System.out.println("║                                     Không tìm thấy sản phẩm phù hợp với mã sản phẩm bạn đã nhập !                                       ║");
+            System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
         }
-        System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
-
     }
 
     private void timTheoTenSP() {
@@ -236,8 +272,11 @@ public class Menu {
         if (!sanPhamList.isEmpty()) {
             hienThi(sanPhamList);
         } else {
-            System.out.println("Không tìm thấy Sản Phẩm nào từ tên sản phẩm trên !");
+            hienThi(sanPhamList);
+            System.out.println("║                                     Không tìm thấy sản phẩm phù hợp với tên sản phẩm bạn đã nhập !                                      ║");
+            System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
         }
+
     }
 
     private void timTheoDanhMucSP() {
@@ -247,7 +286,9 @@ public class Menu {
         if (!sanPhamList.isEmpty()) {
             hienThi(sanPhamList);
         } else {
-            System.out.println("Không tìm thấy Sản Phẩm nào từ tên sản phẩm trên !");
+            hienThi(sanPhamList);
+            System.out.println("║                                Không tìm thấy sản phẩm phù hợp với tên danh mục sản phẩm bạn đã nhập !                                  ║");
+            System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
         }
     }
 
@@ -255,40 +296,20 @@ public class Menu {
         System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
         System.out.println("║                                                          DANH SÁCH SẢN PHẨM                                                             ║");
         System.out.println("╠════════════╦════════════════════════╦══════════════════╦════════════╦════════════════════════╦════════════════════════╦═════════════════╣");
-        System.out.printf("║ %-10s ║ %-22s ║ %-16s ║ %-10s ║ %-22s ║ %-22s ║ %-15s ║\n", "    Mã", "   Tên", "     Giá", " Số lượng", "        Mô tả", "      Danh mục", "    Nhà SX");
+        System.out.printf("║ %-10s ║ %-22s ║ %-16s ║ %-10s ║ %-22s ║ %-22s ║ %-15s ║\n",
+                "    Mã", "   Tên", "     Giá", " Số lượng", "        Mô tả", "      Danh mục", "    Nhà SX");
         System.out.println("╠════════════╬════════════════════════╬══════════════════╬════════════╬════════════════════════╬════════════════════════╬═════════════════╣");
-        for (SanPham sp : sanPhamList) {
-            System.out.printf("║ %-10s ║ %-22s ║ %-16.2f ║ %-10d ║ %-22s ║ %-22s ║ %-15s ║\n", sp.getMaSanPham(), sp.getTenSanPham(), sp.getGiaSanPham(), sp.getSoLuong(), sp.getMoTa(), sp.getDanhMuc(), sp.getNhaSanXuat());
-            System.out.println("╠════════════╬════════════════════════╬══════════════════╬════════════╬════════════════════════╬════════════════════════╬═════════════════╣");
+
+        for (int i = 0; i < sanPhamList.size(); i++) {
+            SanPham sp = sanPhamList.get(i);
+            System.out.printf("║ %-10s ║ %-22s ║ %-16.2f ║ %-10d ║ %-22s ║ %-22s ║ %-15s ║\n",
+                    sp.getMaSanPham(), sp.getTenSanPham(), sp.getGiaSanPham(), sp.getSoLuong(),
+                    sp.getMoTa(), sp.getDanhMuc(), sp.getNhaSanXuat());
+            if (i < sanPhamList.size() - 1) {
+                System.out.println("╠════════════╬════════════════════════╬══════════════════╬════════════╬════════════════════════╬════════════════════════╬═════════════════╣");
+            }
         }
         System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
-
-    }
-
-    void ghiVaoFile() {
-        System.out.println("══════════════════ GHI VÀO FILE ══════════════════");
-        String confirm = inputStr("Cảnh báo: Lựa chọn này sẽ tiếp tục ghi nội dung mới vào file! [Yes/No]: ");
-        if (confirm.equalsIgnoreCase("Yes")) {
-            if (sanPhamFileIO.writeCSVFile(sanPhamManager.getAll(), "sanpham.CSV")) {
-                System.out.println("Ghi vào file \"data/sanpham.CSV\" thành công!");
-            } else {
-                System.out.println("Đã xảy ra lỗi ghi file!");
-            }
-        }
-    }
-
-    void docTuFile() {
-        System.out.println("══════════════════ ĐỌC TỪ FILE ══════════════════");
-        String confirm = inputStr("Cảnh báo: Lựa chọn này sẽ ghi đè nội dung mới! [Yes/No]: ");
-        if (confirm.equalsIgnoreCase("yes")) {
-            List<SanPham> docFileList = sanPhamFileIO.readCSV("sanpham.CSV");
-            if (!docFileList.isEmpty()) {
-                System.out.println("Đọc từ file \"sanpham.CSV\" thành công!");
-                sanPhamManager.setSanPhamList(docFileList);
-            } else {
-                System.out.println("Đã xảy ra lỗi đọc file!");
-            }
-        }
     }
 
     private void nhapSanPham(SanPham sanPham) {
@@ -310,7 +331,7 @@ public class Menu {
             if (str.isEmpty()) {
                 System.out.println("Trường dữ liệu không được bỏ trống. Vui lòng nhập lại !");
             } else if (!validator.isValidID(str)) {
-                System.out.println("Nhập sai định dạng! Vui lòng nhập mã SP có ít nhất có một chữ và một số...!");
+                System.out.println("Định dạng mã sản phẩm không hợp lệ (phải chứa ít nhất 1 chữ và 1 số)!");
             } else if (checkID(str)) {
                 System.out.println("Mã sản phẩm đã tồn tại! Vui lòng nhập lại....");
             } else {
@@ -329,7 +350,7 @@ public class Menu {
             if (str.isEmpty()) {
                 System.out.println("Trường dữ liệu không được bỏ trống. Vui lòng nhập lại !");
             } else if (!validator.isValidID(str)) {
-                System.out.println("Nhập sai định dạng! Vui lòng nhập mã SP có ít nhất có một chữ và một số...!");
+                System.out.println("Định dạng mã sản phẩm không hợp lệ (phải chứa ít nhất 1 chữ và 1 số)!");
             } else {
                 break;
             }
@@ -339,7 +360,7 @@ public class Menu {
 
     private boolean checkID(String str) {
         for (SanPham sp : sanPhamManager.sanPhamList) {
-            if (str.equals(sp.getMaSanPham())) {
+            if (str.equalsIgnoreCase(sp.getMaSanPham())) {
                 return true;
             }
         }
@@ -359,11 +380,10 @@ public class Menu {
             try {
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("Nhập sai định dạng! Vui lòng nhập số nguyên.");
+                System.out.println("Vui lòng nhập số nguyên hợp lệ!");
             }
         }
     }
-
 
     private Double nhapGiaSanPham() {
         while (true) {
@@ -376,7 +396,7 @@ public class Menu {
             try {
                 return Double.parseDouble(input);
             } catch (NumberFormatException e) {
-                System.out.println("Nhập sai định dạng! Vui lòng nhập số nguyên.");
+                System.out.println("Vui lòng nhập một số hợp lệ (có thể chứa phần thập phân)!");
             }
         }
     }
