@@ -69,6 +69,7 @@ public class Menu {
         nhapSanPham(sanPhamMoi);
         if (sanPhamManager.add(sanPhamMoi)) {
             System.out.println("Bạn đã thêm sản phẩm thành công !");
+            danhSachSanPham();
         } else {
             System.out.println("Có lỗi xảy ra! Vui lòng thử lại.");
 
@@ -107,6 +108,7 @@ public class Menu {
             if (confirm.equalsIgnoreCase("Yes")) {
                 sanPhamManager.remove(sanPham);
                 System.out.println("Sản phẩm đã được xóa !");
+                danhSachSanPham();
             } else {
                 System.out.println("Bạn đã hủy xóa sản phẩm thành công!");
             }
