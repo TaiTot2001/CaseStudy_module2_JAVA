@@ -259,9 +259,9 @@ public class Menu {
         if (!sanPhamList.isEmpty()) {
             hienThi(sanPhamList);
         } else {
+            System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
+            System.out.println("║                                 **  Không tìm thấy sản phẩm phù hợp với mã sản phẩm bạn đã nhập ! **                                    ║");
             hienThi(sanPhamList);
-            System.out.println("║                                     Không tìm thấy sản phẩm phù hợp với mã sản phẩm bạn đã nhập !                                       ║");
-            System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
         }
     }
 
@@ -272,9 +272,9 @@ public class Menu {
         if (!sanPhamList.isEmpty()) {
             hienThi(sanPhamList);
         } else {
+            System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
+            System.out.println("║                                 **  Không tìm thấy sản phẩm phù hợp với tên sản phẩm bạn đã nhập ! **                                   ║");
             hienThi(sanPhamList);
-            System.out.println("║                                     Không tìm thấy sản phẩm phù hợp với tên sản phẩm bạn đã nhập !                                      ║");
-            System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
         }
 
     }
@@ -286,9 +286,9 @@ public class Menu {
         if (!sanPhamList.isEmpty()) {
             hienThi(sanPhamList);
         } else {
+            System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
+            System.out.println("║                            **  Không tìm thấy sản phẩm phù hợp với tên danh mục sản phẩm bạn đã nhập ! **                               ║");
             hienThi(sanPhamList);
-            System.out.println("║                                Không tìm thấy sản phẩm phù hợp với tên danh mục sản phẩm bạn đã nhập !                                  ║");
-            System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
         }
     }
 
@@ -299,17 +299,20 @@ public class Menu {
         System.out.printf("║ %-10s ║ %-22s ║ %-16s ║ %-10s ║ %-22s ║ %-22s ║ %-15s ║\n",
                 "    Mã", "   Tên", "     Giá", " Số lượng", "        Mô tả", "      Danh mục", "    Nhà SX");
         System.out.println("╠════════════╬════════════════════════╬══════════════════╬════════════╬════════════════════════╬════════════════════════╬═════════════════╣");
-
-        for (int i = 0; i < sanPhamList.size(); i++) {
-            SanPham sp = sanPhamList.get(i);
-            System.out.printf("║ %-10s ║ %-22s ║ %-16.2f ║ %-10d ║ %-22s ║ %-22s ║ %-15s ║\n",
-                    sp.getMaSanPham(), sp.getTenSanPham(), sp.getGiaSanPham(), sp.getSoLuong(),
-                    sp.getMoTa(), sp.getDanhMuc(), sp.getNhaSanXuat());
-            if (i < sanPhamList.size() - 1) {
-                System.out.println("╠════════════╬════════════════════════╬══════════════════╬════════════╬════════════════════════╬════════════════════════╬═════════════════╣");
+        if(!sanPhamList.isEmpty()) {
+            for (int i = 0; i < sanPhamList.size(); i++) {
+                SanPham sp = sanPhamList.get(i);
+                System.out.printf("║ %-10s ║ %-22s ║ %-16.2f ║ %-10d ║ %-22s ║ %-22s ║ %-15s ║\n",
+                        sp.getMaSanPham(), sp.getTenSanPham(), sp.getGiaSanPham(), sp.getSoLuong(),
+                        sp.getMoTa(), sp.getDanhMuc(), sp.getNhaSanXuat());
+                if (i < sanPhamList.size() - 1) {
+                    System.out.println("╠════════════╬════════════════════════╬══════════════════╬════════════╬════════════════════════╬════════════════════════╬═════════════════╣");
+                }
             }
+        }else{
+            System.out.println("║                                                      Danh sách sản phẩm trống !                                                         ║");
+            System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
         }
-        System.out.println("╚════════════╩════════════════════════╩══════════════════╩════════════╩════════════════════════╩════════════════════════╩═════════════════╝");
     }
 
     private void nhapSanPham(SanPham sanPham) {
