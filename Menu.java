@@ -134,7 +134,7 @@ public class Menu {
                 case 4:
                     return;
                 default:
-                    System.out.println("No choice !");
+                    System.out.println("Không có lựa chọn này!");
             }
         } while (choiceSearch != 0);
     }
@@ -157,9 +157,10 @@ public class Menu {
                     sapXepDanhMuc();
                     break;
                 case 3:
+                    System.out.println("Đã thoát khỏi chức năng sắp xếp sản phẩm...");
                     return;
                 default:
-                    System.out.println("No choice !");
+                    System.out.println("Không có lựa chọn này!");
             }
         } while (choiceSearch != 0);
     }
@@ -190,9 +191,10 @@ public class Menu {
                     giamSoLuong();
                     break;
                 case 3:
+                    System.out.println("Đã thoát khỏi chức năng sắp xếp theo số lượng");
                     return;
                 default:
-                    System.out.println("No choice !");
+                    System.out.println("Không có lựa chọn này!");
             }
         } while (choice != 0);
     }

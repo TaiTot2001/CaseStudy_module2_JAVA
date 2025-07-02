@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -37,12 +38,16 @@ public class Main {
                         menu.docTuFile();
                         break;
                     case 9:
+                        System.out.println("Thoát chương trình...");
                         return;
                     default:
-                        System.out.println("No choice!");
+                        System.out.println("Không có lựa chọn này!");
 
                 }
             }
+        } catch (InputMismatchException e) {
+            System.out.println("Lỗi: Vui lòng chỉ nhập số (không nhập chữ hay ký tự đặc biệt)!");
+            scanner.nextLine();
         } catch (Exception e) {
             e.printStackTrace();
         }

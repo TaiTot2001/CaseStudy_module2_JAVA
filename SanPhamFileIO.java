@@ -26,7 +26,6 @@ public class SanPhamFileIO implements FileIO<SanPham> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return false;
     }
 
